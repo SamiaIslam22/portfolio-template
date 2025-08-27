@@ -32,53 +32,43 @@ body {
   background-size: 50px 50px;
 }
 
-/* Responsive scaling using transform */
-.responsive-zoom {
-  /* Default: no scaling for desktop */
-  transform: scale(1);
-  transform-origin: top left;
-  width: 100%;
-  height: 100%;
-}
-
-/* Tablets and smaller laptops */
-@media screen and (max-width: 1200px) {
-  .responsive-zoom {
-    transform: scale(0.85);
-  }
-}
-
-/* Large tablets */
-@media screen and (max-width: 1024px) {
-  .responsive-zoom {
-    transform: scale(0.8);
-  }
-}
-
-/* Small tablets */
+/* Simple mobile scaling - this will definitely work */
 @media screen and (max-width: 768px) {
-  .responsive-zoom {
-    transform: scale(0.72);
+  html {
+    zoom: 0.67;
   }
-}
-
-/* Large phones */
-@media screen and (max-width: 640px) {
-  .responsive-zoom {
+  
+  /* Alternative fallback for browsers that don't support zoom */
+  body {
     transform: scale(0.67);
+    transform-origin: top left;
+    width: 149%; /* 100 / 0.67 */
+    height: 149%;
   }
 }
 
-/* Small phones */
 @media screen and (max-width: 480px) {
-  .responsive-zoom {
-    transform: scale(0.62);
+  html {
+    zoom: 0.6;
+  }
+  
+  body {
+    transform: scale(0.6);
+    transform-origin: top left;
+    width: 167%; /* 100 / 0.6 */
+    height: 167%;
   }
 }
 
-/* Very small phones */
 @media screen and (max-width: 360px) {
-  .responsive-zoom {
+  html {
+    zoom: 0.55;
+  }
+  
+  body {
     transform: scale(0.55);
+    transform-origin: top left;
+    width: 182%; /* 100 / 0.55 */
+    height: 182%;
   }
 }
