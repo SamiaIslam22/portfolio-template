@@ -269,7 +269,7 @@ const ProjectsSection = ({ isAnimating }: ProjectsSectionProps) => {
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.1 * i, duration: 0.4 }}
                         >
-                          <span className="text-green-400 mt-1 flex-shrink-0">▸</span>
+                          <span className="text-green-400 mt-1 flex-shrink-0">&#9658;</span>
                           <span className="text-gray-300 text-sm">{highlight}</span>
                         </motion.div>
                       ))}

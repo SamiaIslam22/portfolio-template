@@ -101,7 +101,7 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
           </h2>
           <p className="font-mono text-gray-400 text-sm md:text-base">
             <span className="text-indigo-400">return</span>{' '}
-            <span className="text-cyan-300">"Let's build something amazing together!"</span>
+            <span className="text-cyan-300">{"Let's build something amazing together!"}</span>
             <span className="text-gray-400">;</span>
           </p>
           <p className="font-mono text-white text-base md:text-lg mt-2">{'}'}</p>
@@ -272,7 +272,7 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                     animate={{ opacity: 1, y: 0 }}
                   >
                     <p className="font-mono text-green-400 text-sm">
-                      Message sent successfully! I'll get back to you soon.
+                      {"Message sent successfully! I'll get back to you soon."}
                     </p>
                   </motion.div>
                 )}
@@ -301,7 +301,7 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
           transition={{ delay: 2, duration: 0.5 }}
         >
           <p className="font-mono text-gray-400 text-sm">
-            <span className="text-gray-500">// </span>
+            <span className="text-gray-500">{/* */}// {/* */}</span>
             Prefer a different method? Feel free to reach out through any of the channels above.
             <br />
             <span className="text-blue-400">Response time: Usually within 24 hours</span>

@@ -95,8 +95,8 @@ export default function Home() {
                 
                 // Array of more code snippets
                 const codeSnippets = [
-                  'stack_overflow', 'console.log("✨")', 'const magic = () => {...}', 
-                  'while(coding) learn++;', '// This works!', 'git commit -m "✨"',
+                  'stack_overflow', 'console.log("*")', 'const magic = () => {...}', 
+                  'while(coding) learn++;', '// This works!', 'git commit -m "*"',
                   'npm install', 'async/await', 'try { } catch()', 'function debug()',
                   'return true;', 'import React', 'export default', 'useState()',
                   'useEffect()', '=> arrow func', 'null_pointer', 'undefined'
@@ -197,7 +197,7 @@ export default function Home() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.9 }}
                   >
-                    "Samia's Portfolio"
+                    {"Samia's Portfolio"}
                   </motion.span>
                   <motion.span 
                     className="text-white"

@@ -56,7 +56,7 @@ const ExperienceSection = ({ isAnimating }: ExperienceSectionProps) => {
     { text: '  ]', color: 'text-sky-400', indent: 1 },
     { text: '};', color: 'text-blue-400', indent: 0 },
     { text: '', color: '', indent: 0 },
-    { text: '// 3 internships . 36,000+ students impacted . 40% efficiency improvement', color: 'text-gray-500', indent: 0 },
+    { text: '// 3 internships - 36000+ students impacted - 40% efficiency improvement', color: 'text-gray-500', indent: 0 },
     { text: 'console.log("Ready to drive innovation in tech!");', color: 'text-sky-400', indent: 0 }
   ];
 
