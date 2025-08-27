@@ -301,7 +301,7 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
           transition={{ delay: 2, duration: 0.5 }}
         >
           <p className="font-mono text-gray-400 text-sm">
-            <span className="text-gray-500">// </span>
+            <span className="text-gray-500">{"//"} </span>
             Prefer a different method? Feel free to reach out through any of the channels above.
             <br />
             <span className="text-blue-400">Response time: Usually within 24 hours</span>
