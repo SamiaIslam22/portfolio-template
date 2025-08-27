@@ -239,7 +239,7 @@ export default function Home() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 2.5 }}
                 >
-                  <span className="text-slate-400">// Building the future, one commit at a time</span>
+                  <span className="text-slate-400">{/* Building the future, one commit at a time */}</span>
                 </motion.div>
               </motion.div>
             </div>
