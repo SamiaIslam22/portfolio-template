@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { techWords, getWordsForSection } from '@/utils/techWords';
 
@@ -53,14 +53,14 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
   }, []);
 
   // Generate words for homepage pile - only on client
-  const generateHomePile = () => {
+  const generateHomePile = useCallback(() => {
     if (typeof window === 'undefined' || !isClient) return;
     
     const wordCount = window.innerWidth < 768 ? 80 : 120;
     
     // Use seeded random for consistent results
     const seededRandom = (seed: number) => {
-      let x = Math.sin(seed) * 10000;
+      const x = Math.sin(seed) * 10000;
       return x - Math.floor(x);
     };
     
@@ -92,9 +92,9 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
       const randomSize = seededRandom(i * 13);
       const randomRotation = seededRandom(i * 17);
       
-      const x = Math.max(margin, Math.min(screenWidth - margin - 80, 
+      const finalX = Math.max(margin, Math.min(screenWidth - margin - 80, 
         baseX + (randomX - 0.5) * 40));
-      const y = Math.max(bottomStart, Math.min(bottomStart + pileHeight - 30, 
+      const finalY = Math.max(bottomStart, Math.min(bottomStart + pileHeight - 30, 
         baseY + (randomY - 0.5) * 20));
       
       let scale: number, fontSize: string;
@@ -113,8 +113,8 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
       newWords.push({
         id: `home-word-${i}`,
         text: selectedWords[i],
-        x,
-        y,
+        x: finalX,
+        y: finalY,
         rotation: randomRotation * 20 - 10,
         scale,
         color: colors[i % colors.length], // Use index instead of random
@@ -124,10 +124,10 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
     }
     
     setHomeWords(newWords);
-  };
+  }, [isClient, colors]);
 
   // Generate formation text
-  const generateFormation = () => {
+  const generateFormation = useCallback(() => {
     if (typeof window === 'undefined' || !isClient) return;
     
     const sectionWords = getWordsForSection(targetSection);
@@ -147,14 +147,14 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
     }));
     
     setFormationWords(newFormation);
-  };
+  }, [isClient, targetSection]);
 
   // Initialize home pile
   useEffect(() => {
     if (showOnHome && !isAnimating && isClient) {
       generateHomePile();
     }
-  }, [showOnHome, isAnimating, isClient]);
+  }, [showOnHome, isAnimating, isClient, generateHomePile]);
 
   // Handle transition animation - REMOVED ALL TEXT ANIMATIONS
   useEffect(() => {
@@ -177,7 +177,7 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [showOnHome, isAnimating, isClient]);
+  }, [showOnHome, isAnimating, isClient, generateHomePile]);
 
   const wordStyle = (wordItem: WordItem) => ({
     background: `linear-gradient(145deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.9) 100%)`,
