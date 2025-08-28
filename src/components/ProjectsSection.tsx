@@ -130,7 +130,7 @@ const ProjectsSection = ({ isAnimating }: ProjectsSectionProps) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 1 }}
     >
-      <div className="w-full max-w-4xl">
+      <div className="w-full max-w-6xl">
         {/* Header */}
         <motion.div
           className="text-center mb-3"
@@ -278,13 +278,13 @@ const ProjectsSection = ({ isAnimating }: ProjectsSectionProps) => {
                 </div>
                 
                 {/* Right side - Project Image/Screenshot */}
-                <div className="flex-shrink-0 w-full lg:w-64 flex items-start justify-center">
-                  <div className="bg-gray-800/50 border border-blue-400/30 rounded-lg p-2 w-full flex items-center justify-center">
+                <div className="flex-shrink-0 w-full lg:w-80 flex items-center justify-center">
+                  <div className="bg-gray-800/50 border border-blue-400/30 rounded-lg p-3 w-full flex items-center justify-center">
                     {currentProject.id === 1 && (
                       <img 
                         src="/project1.png" 
                         alt="UCSB RAG Chatbot System Screenshot"
-                        className="w-full h-auto object-contain rounded-lg max-h-36"
+                        className="w-full h-auto object-contain rounded-lg max-h-48"
                       />
                     )}
                     {currentProject.id === 2 && (
