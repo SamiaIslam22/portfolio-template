@@ -15,20 +15,8 @@ const EnhancedTerminal = () => {
   const [lines, setLines] = useState<TerminalLine[]>([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isBooting, setIsBooting] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
 
-  // Check screen size
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  // Boot sequence data - adjusted for mobile
+  // Boot sequence data
   const bootSequence: TerminalLine[] = [
     { id: '1', type: 'command', text: '$ initializing portfolio...', delay: 0, showCursor: true },
     { id: '2', type: 'loading', text: '[████████░░] 80% Loading skills...', delay: 1000 },
@@ -98,17 +86,14 @@ const EnhancedTerminal = () => {
     }
   };
 
-  // Responsive dimensions
-  const terminalStyle = {
-    width: isMobile ? 'min(95vw, 400px)' : 'min(90vw, 600px)',
-    height: isMobile ? 'min(60vh, 400px)' : 'min(70vh, 500px)',
-    maxHeight: isMobile ? '400px' : '500px'
-  };
-
   return (
     <motion.div
-      className="relative mx-auto bg-gray-900/95 rounded-xl border border-slate-600/50 overflow-hidden backdrop-blur-sm terminal-content"
-      style={terminalStyle}
+      className="relative mx-auto bg-gray-900/95 rounded-xl border border-slate-600/50 overflow-hidden backdrop-blur-sm"
+      style={{ 
+        width: 'min(90vw, 600px)',
+        height: 'min(70vh, 500px)',
+        maxHeight: '500px'
+      }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       transition={{ 
@@ -119,37 +104,37 @@ const EnhancedTerminal = () => {
       }}
     >
       {/* Terminal Header */}
-      <div className="flex items-center justify-between p-3 sm:p-4 bg-gray-800/80 border-b border-slate-600/50">
+      <div className="flex items-center justify-between p-4 bg-gray-800/80 border-b border-slate-600/50">
         <div className="flex space-x-2">
           <motion.div 
-            className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-red-500 rounded-full cursor-pointer"
+            className="w-3 h-3 bg-red-500 rounded-full cursor-pointer"
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           />
           <motion.div 
-            className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-yellow-500 rounded-full cursor-pointer"
+            className="w-3 h-3 bg-yellow-500 rounded-full cursor-pointer"
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           />
           <motion.div 
-            className="w-2.5 h-2.5 sm:w-3 sm:h-3 bg-green-500 rounded-full cursor-pointer"
+            className="w-3 h-3 bg-green-500 rounded-full cursor-pointer"
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
           />
         </div>
-        <div className="text-xs sm:text-sm text-slate-400 font-mono">
+        <div className="text-sm text-slate-400 font-mono">
           samia@portfolio:~$
         </div>
-        <div className="w-12 sm:w-16" /> {/* Spacer */}
+        <div className="w-16" /> {/* Spacer */}
       </div>
 
       {/* Terminal Content */}
-      <div className="p-3 sm:p-4 h-full overflow-y-auto font-mono text-xs sm:text-sm">
-        <motion.div className="space-y-1 sm:space-y-2">
+      <div className="p-4 h-full overflow-y-auto font-mono text-sm">
+        <motion.div className="space-y-2">
           {lines.map((line, index) => (
             <motion.div
               key={line.id}
-              className={`${getLineColor(line.type)} leading-relaxed typewriter-text`}
+              className={`${getLineColor(line.type)} leading-relaxed`}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1, duration: 0.3 }}
@@ -196,58 +181,54 @@ const EnhancedTerminal = () => {
           ))}
         </motion.div>
 
-        {/* System stats sidebar - Only on desktop */}
-        {!isMobile && (
+        {/* System stats sidebar */}
+        <motion.div
+          className="absolute top-16 right-4 text-xs text-slate-400 space-y-1"
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 2, duration: 0.5 }}
+        >
           <motion.div
-            className="absolute top-16 right-4 text-xs text-slate-400 space-y-1"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 2, duration: 0.5 }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity }}
           >
-            <motion.div
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              CPU: 47%
-            </motion.div>
-            <motion.div
-              animate={{ opacity: [1, 0.5, 1] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
-            >
-              RAM: 62%
-            </motion.div>
-            <motion.div
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-            >
-              NET: ↑↓
-            </motion.div>
+            CPU: 47%
           </motion.div>
-        )}
+          <motion.div
+            animate={{ opacity: [1, 0.5, 1] }}
+            transition={{ duration: 2, repeat: Infinity, delay: 0.5 }}
+          >
+            RAM: 62%
+          </motion.div>
+          <motion.div
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 2, repeat: Infinity, delay: 1 }}
+          >
+            NET: ↑↓
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* Terminal glow effect */}
       <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-blue-500/5 to-transparent pointer-events-none" />
       <div className="absolute inset-0 rounded-xl ring-1 ring-blue-400/20 pointer-events-none" />
       
-      {/* Scanning line effect - Only on desktop */}
-      {!isMobile && (
-        <motion.div
-          className="absolute left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400/60 to-transparent"
-          initial={{ top: '10%' }}
-          animate={{ top: '90%' }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "linear",
-            repeatDelay: 5
-          }}
-        />
-      )}
+      {/* Scanning line effect */}
+      <motion.div
+        className="absolute left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-blue-400/60 to-transparent"
+        initial={{ top: '10%' }}
+        animate={{ top: '90%' }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "linear",
+          repeatDelay: 5
+        }}
+      />
 
       {/* Network activity indicator */}
       <motion.div
-        className="absolute top-2 right-2 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-green-400 rounded-full"
+        className="absolute top-2 right-2 w-2 h-2 bg-green-400 rounded-full"
         animate={{
           scale: [1, 1.5, 1],
           opacity: [0.7, 1, 0.7]

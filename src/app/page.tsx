@@ -15,18 +15,6 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<string>('home');
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [showHomePage, setShowHomePage] = useState<boolean>(true);
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-
-  // Check if mobile/tablet
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   // Disable scrolling always - we control all navigation
   useEffect(() => {
@@ -81,7 +69,7 @@ export default function Home() {
       <AnimatePresence>
         {showHomePage && (
           <motion.div 
-            className="min-h-screen flex flex-col justify-center items-center relative z-10 px-4"
+            className="h-screen flex flex-col justify-center items-center relative z-10"
             initial={{ opacity: 1, y: 0 }}
             exit={{ 
               opacity: 0, 
@@ -89,66 +77,68 @@ export default function Home() {
               transition: { duration: 1.5, ease: "easeInOut" }
             }}
           >
-            {/* Floating Code Snippets - Only show on desktop */}
-            {!isMobile && (
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                {[...Array(8)].map((_, i) => {
-                  // Generate random positions avoiding center area
-                  const centerX = 50; // Center percentage
-                  const centerY = 50; // Center percentage
-                  const avoidRadius = 30; // Percentage radius to avoid center
-                  
-                  let x, y;
-                  do {
-                    x = Math.random() * 80 + 10; // 10% to 90%
-                    y = Math.random() * 80 + 10; // 10% to 90%
-                  } while (
-                    Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)) < avoidRadius
-                  );
-                  
-                  // Array of code snippets
-                  const codeSnippets = [
-                    'stack_overflow', 'console.log("*")', 'const magic = () => {...}', 
-                    'while(coding) learn++;', '// This works!', 'git commit -m "*"',
-                    'npm install', 'async/await', 'try { } catch()', 'function debug()'
-                  ];
-                  
-                  return (
-                    <motion.div
-                      key={`float-${i}`}
-                      className="floating-code absolute text-xs sm:text-sm font-mono text-blue-400/60 bg-black/50 px-2 sm:px-3 py-1 sm:py-2 rounded-lg border border-blue-400/20"
-                      style={{
-                        left: `${x}%`,
-                        top: `${y}%`,
-                      }}
-                      initial={{ 
-                        opacity: 0,
-                        scale: 0.8
-                      }}
-                      animate={{
-                        opacity: 1,
-                        scale: 1,
-                      }}
-                      transition={{
-                        duration: 1,
-                        delay: i * 0.2,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        repeatDelay: 12
-                      }}
-                    >
-                      {codeSnippets[i % codeSnippets.length]}
-                    </motion.div>
-                  );
-                })}
-              </div>
-            )}
+            {/* Floating Code Snippets - Random positions and more words */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {[...Array(12)].map((_, i) => {
+                // Generate random positions each time - avoiding center area
+                const centerX = 50; // Center percentage
+                const centerY = 50; // Center percentage
+                const avoidRadius = 25; // Percentage radius to avoid center
+                
+                let x, y;
+                do {
+                  x = Math.random() * 80 + 10; // 10% to 90%
+                  y = Math.random() * 80 + 10; // 10% to 90%
+                } while (
+                  Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)) < avoidRadius
+                );
+                
+                // Array of more code snippets
+                const codeSnippets = [
+                  'stack_overflow', 'console.log("*")', 'const magic = () => {...}', 
+                  'while(coding) learn++;', '// This works!', 'git commit -m "*"',
+                  'npm install', 'async/await', 'try { } catch()', 'function debug()',
+                  'return true;', 'import React', 'export default', 'useState()',
+                  'useEffect()', '=> arrow func', 'null_pointer', 'undefined'
+                ];
+                
+                return (
+                  <motion.div
+                    key={`float-${i}`}
+                    className="absolute text-sm font-mono text-blue-400/60 bg-black/50 px-3 py-2 rounded-lg border border-blue-400/20"
+                    style={{
+                      left: `${x}%`,
+                      top: `${y}%`,
+                      transform: 'rotate(0deg)' // Keep straight
+                    }}
+                    initial={{ 
+                      opacity: 0,
+                      scale: 0.8
+                    }}
+                    animate={{
+                      opacity: 1,
+                      scale: 1,
+                      rotate: 0
+                    }}
+                    transition={{
+                      duration: 1,
+                      delay: i * 0.2,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      repeatDelay: 12
+                    }}
+                  >
+                    {codeSnippets[i % codeSnippets.length]}
+                  </motion.div>
+                );
+              })}
+            </div>
 
-            {/* Main Content - Responsive layout */}
-            <div className="homepage-layout w-full max-w-7xl">
+            {/* Main Content - Side by side layout */}
+            <div className="flex items-center justify-center gap-16 mb-8 z-20 max-w-7xl mx-auto">
               {/* Enhanced Terminal Window */}
               <motion.div 
-                className="terminal-container flex-shrink-0"
+                className="flex-shrink-0"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.5, duration: 0.8, type: "spring" }}
@@ -158,7 +148,7 @@ export default function Home() {
 
               {/* Title Section */}
               <motion.div
-                className="title-section flex-shrink-0 mt-8 lg:mt-0"
+                className="text-center flex-shrink-0"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ 
@@ -168,7 +158,7 @@ export default function Home() {
                   stiffness: 100
                 }}
               >
-                <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 leading-tight">
+                <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-4">
                   <motion.span 
                     className="text-blue-400"
                     initial={{ opacity: 0 }}
@@ -207,7 +197,7 @@ export default function Home() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 1.9 }}
                   >
-                    {"\"Samia's Portfolio\""}
+                    {"Samia's Portfolio"}
                   </motion.span>
                   <motion.span 
                     className="text-white"
@@ -227,7 +217,7 @@ export default function Home() {
                   </motion.span>
                   {/* Blinking Cursor */}
                   <motion.span 
-                    className="text-blue-400 ml-0.5 text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl"
+                    className="text-blue-400 ml-0.5 text-4xl md:text-5xl lg:text-7xl"
                     initial={{ opacity: 0 }}
                     animate={{ 
                       opacity: [0, 1, 1, 0]
@@ -243,12 +233,20 @@ export default function Home() {
                     |
                   </motion.span>
                 </h1>
+                <motion.div
+                  className="text-blue-400 text-sm md:text-base"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 2.5 }}
+                >
+                  <span className="text-slate-400">{/* Building the future, one commit at a time */}</span>
+                </motion.div>
               </motion.div>
             </div>
 
-            {/* Stats Panel - Responsive positioning */}
+            {/* Stats Panel - Simplified */}
             <motion.div
-              className="stats-panel absolute top-20 right-4 sm:right-10 text-xs font-mono text-slate-400 bg-gray-900/70 backdrop-blur-sm p-3 sm:p-4 rounded-lg border border-slate-600/30"
+              className="absolute top-20 right-10 text-xs font-mono text-slate-400 bg-gray-900/70 backdrop-blur-sm p-4 rounded-lg border border-slate-600/30"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 2.8, duration: 0.8 }}
@@ -271,7 +269,7 @@ export default function Home() {
 
             {/* Status Indicator */}
             <motion.div
-              className="absolute top-10 left-4 sm:left-10 flex items-center gap-2 text-xs text-slate-400 bg-gray-900/70 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-600/30"
+              className="absolute top-10 left-10 flex items-center gap-2 text-xs text-slate-400 bg-gray-900/70 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-600/30"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 3, type: "spring" }}
@@ -294,7 +292,7 @@ export default function Home() {
       <AnimatePresence>
         {!showHomePage && (
           <motion.div
-            className="min-h-screen section-container"
+            className="min-h-screen"
             initial={{ y: typeof window !== 'undefined' ? window.innerHeight : 1000 }}
             animate={{ y: 0 }}
             exit={{ y: typeof window !== 'undefined' ? window.innerHeight : 1000 }}
@@ -312,13 +310,11 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Word Pile - Hide on mobile to prevent issues */}
-      {!isMobile && (
-        <WordPile 
-          isAnimating={isAnimating}
-          targetSection={activeSection}
-        />
-      )}
+      {/* Word Pile - Enhanced with fall and formation animations */}
+      <WordPile 
+        isAnimating={isAnimating}
+        targetSection={activeSection}
+      />
     </main>
   );
 }
