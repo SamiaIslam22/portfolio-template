@@ -81,47 +81,47 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
 
   return (
     <motion.section
-      className="min-h-screen pt-24 pb-12 px-4"
+      className="min-h-screen pt-20 pb-6 px-4"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 1 }}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-6"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <h2 className="font-mono text-lg md:text-xl font-bold text-blue-400 mb-4">
+          <h2 className="font-mono text-sm md:text-base font-bold text-blue-400 mb-2">
             <span className="text-sky-400">function</span>{' '}
             <span className="text-cyan-400">getInTouch</span>
             <span className="text-white">() {'{'}</span>
           </h2>
-          <p className="font-mono text-gray-400 text-sm md:text-base">
+          <p className="font-mono text-gray-400 text-xs">
             <span className="text-indigo-400">return</span>{' '}
             <span className="text-cyan-300">{"Let's build something amazing together!"}</span>
             <span className="text-gray-400">;</span>
           </p>
-          <p className="font-mono text-white text-base md:text-lg mt-2">{'}'}</p>
+          <p className="font-mono text-white text-sm mt-1">{'}'}</p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
           {/* Contact Information */}
           <motion.div
-            className="space-y-8"
+            className="space-y-6"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1, duration: 0.8 }}
           >
             <div>
-              <h3 className="text-2xl font-mono font-bold text-blue-400 mb-6 flex items-center gap-2">
-                <MessageSquare className="w-6 h-6" />
+              <h3 className="text-lg font-mono font-bold text-blue-400 mb-4 flex items-center gap-2">
+                <MessageSquare className="w-5 h-5" />
                 Contact Information
               </h3>
               
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {contactInfo.map((contact, index) => {
                   const Icon = contact.icon;
                   return (
@@ -130,18 +130,18 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                       href={contact.href}
                       target={contact.href.startsWith('http') ? '_blank' : undefined}
                       rel={contact.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                      className="flex items-center gap-4 p-4 bg-gray-900/50 backdrop-blur-sm border border-blue-400/30 rounded-lg hover:bg-gray-800/50 hover:border-blue-400/50 transition-all duration-300 group"
+                      className="flex items-center gap-3 p-3 bg-gray-900/50 backdrop-blur-sm border border-blue-400/30 rounded-lg hover:bg-gray-800/50 hover:border-blue-400/50 transition-all duration-300 group"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 1.2 + index * 0.1, duration: 0.5 }}
                       whileHover={{ scale: 1.02 }}
                     >
-                      <div className={`p-3 rounded-lg bg-gray-800/50 ${contact.color}`}>
-                        <Icon className="w-5 h-5" />
+                      <div className={`p-2 rounded-lg bg-gray-800/50 ${contact.color}`}>
+                        <Icon className="w-4 h-4" />
                       </div>
                       <div>
-                        <p className="font-mono text-sm text-gray-400">{contact.label}</p>
-                        <p className={`font-mono ${contact.color} group-hover:text-white transition-colors`}>
+                        <p className="font-mono text-xs text-gray-400">{contact.label}</p>
+                        <p className={`font-mono text-sm ${contact.color} group-hover:text-white transition-colors`}>
                           {contact.value}
                         </p>
                       </div>
@@ -153,16 +153,16 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
 
             {/* Status/Availability */}
             <motion.div
-              className="bg-gray-900/80 backdrop-blur-sm border border-green-400/30 rounded-lg p-6"
+              className="bg-gray-900/80 backdrop-blur-sm border border-green-400/30 rounded-lg p-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.8, duration: 0.5 }}
             >
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                <h4 className="font-mono font-bold text-green-400">Available for Opportunities</h4>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <h4 className="font-mono font-bold text-green-400 text-sm">Available for Opportunities</h4>
               </div>
-              <p className="font-mono text-sm text-gray-300">
+              <p className="font-mono text-xs text-gray-300">
                 Open to full-time positions, internships, and exciting projects. 
                 Currently seeking <span className="text-blue-400">Software Engineering</span> and{' '}
                 <span className="text-cyan-400">AI/ML roles</span> starting Summer 2025.
@@ -170,22 +170,23 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
             </motion.div>
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Contact Form - moved down with margin-top */}
           <motion.div
+            className="mt-9"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.2, duration: 0.8 }}
           >
-            <div className="bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-xl p-8 pb-4">
-              <h3 className="text-2xl font-mono font-bold text-blue-400 mb-6 flex items-center gap-2">
-                <Send className="w-6 h-6" />
+            <div className="bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-xl p-6">
+              <h3 className="text-lg font-mono font-bold text-blue-400 mb-4 flex items-center gap-2">
+                <Send className="w-5 h-5" />
                 Send Message
               </h3>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-mono text-sm text-gray-400 mb-2">
+                    <label className="block font-mono text-xs text-gray-400 mb-1">
                       Name *
                     </label>
                     <input
@@ -194,12 +195,12 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white font-mono text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all duration-300"
+                      className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white font-mono text-xs focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all duration-300"
                       placeholder="Your name"
                     />
                   </div>
                   <div>
-                    <label className="block font-mono text-sm text-gray-400 mb-2">
+                    <label className="block font-mono text-xs text-gray-400 mb-1">
                       Email *
                     </label>
                     <input
@@ -208,14 +209,14 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white font-mono text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all duration-300"
+                      className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white font-mono text-xs focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all duration-300"
                       placeholder="your@email.com"
                     />
                   </div>
                 </div>
                 
                 <div>
-                  <label className="block font-mono text-sm text-gray-400 mb-2">
+                  <label className="block font-mono text-xs text-gray-400 mb-1">
                     Subject *
                   </label>
                   <input
@@ -224,13 +225,13 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white font-mono text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all duration-300"
+                    className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white font-mono text-xs focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all duration-300"
                     placeholder="What's this about?"
                   />
                 </div>
                 
                 <div>
-                  <label className="block font-mono text-sm text-gray-400 mb-2">
+                  <label className="block font-mono text-xs text-gray-400 mb-1">
                     Message *
                   </label>
                   <textarea
@@ -238,8 +239,8 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                     value={formData.message}
                     onChange={handleChange}
                     required
-                    rows={8}
-                    className="w-full px-4 py-3 bg-gray-800/50 border border-gray-600 rounded-lg text-white font-mono text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all duration-300 resize-vertical"
+                    rows={6}
+                    className="w-full px-3 py-2 bg-gray-800/50 border border-gray-600 rounded-lg text-white font-mono text-xs focus:border-blue-400 focus:ring-1 focus:ring-blue-400 outline-none transition-all duration-300 resize-vertical"
                     placeholder="Tell me about your project, opportunity, or just say hi!"
                   />
                 </div>
@@ -247,18 +248,18 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                 <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-6 py-3 bg-blue-400/20 hover:bg-blue-400/30 border border-blue-400 text-blue-400 rounded-lg font-mono font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full px-4 py-2 bg-blue-400/20 hover:bg-blue-400/30 border border-blue-400 text-blue-400 rounded-lg font-mono font-semibold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                   whileHover={!isSubmitting ? { scale: 1.02 } : {}}
                   whileTap={!isSubmitting ? { scale: 0.98 } : {}}
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+                      <div className="w-3 h-3 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
                       Sending...
                     </>
                   ) : (
                     <>
-                      <Send className="w-4 h-4" />
+                      <Send className="w-3 h-3" />
                       Send Message
                     </>
                   )}
@@ -267,11 +268,11 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                 {/* Status Messages */}
                 {submitStatus === 'success' && (
                   <motion.div
-                    className="p-4 bg-green-400/20 border border-green-400/50 rounded-lg"
+                    className="p-3 bg-green-400/20 border border-green-400/50 rounded-lg"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
-                    <p className="font-mono text-green-400 text-sm">
+                    <p className="font-mono text-green-400 text-xs">
                       {"Message sent successfully! I'll get back to you soon."}
                     </p>
                   </motion.div>
@@ -279,11 +280,11 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
                 
                 {submitStatus === 'error' && (
                   <motion.div
-                    className="p-4 bg-red-400/20 border border-red-400/50 rounded-lg"
+                    className="p-3 bg-red-400/20 border border-red-400/50 rounded-lg"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
-                    <p className="font-mono text-red-400 text-sm">
+                    <p className="font-mono text-red-400 text-xs">
                       Failed to send message. Please try emailing me directly.
                     </p>
                   </motion.div>
@@ -295,12 +296,12 @@ const ContactSection = ({ isAnimating }: ContactSectionProps) => {
 
         {/* Footer Note */}
         <motion.div
-          className="text-center mt-12 p-6 bg-gray-900/50 backdrop-blur-sm border border-blue-400/20 rounded-lg"
+          className="text-center mt-8 p-4 bg-gray-900/50 backdrop-blur-sm border border-blue-400/20 rounded-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 2, duration: 0.5 }}
         >
-          <p className="font-mono text-gray-400 text-sm">
+          <p className="font-mono text-gray-400 text-xs">
             <span className="text-gray-500">{"//"} </span>
             Prefer a different method? Feel free to reach out through any of the channels above.
             <br />

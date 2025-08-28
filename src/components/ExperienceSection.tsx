@@ -123,53 +123,55 @@ const ExperienceSection = ({ isAnimating }: ExperienceSectionProps) => {
 
   return (
     <motion.section
-      className="min-h-screen pt-24 pb-12 px-4 flex items-center"
+      className="min-h-screen pt-20 pb-6 px-4 flex items-center"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 1 }}
     >
-      <div className="max-w-5xl mx-auto px-2 transform -translate-x-80 md:-translate-x-96">
+      <div className="max-w-4xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-6">
         {/* Code display */}
-        <div className="font-mono text-sm md:text-base">
-          {/* Completed lines */}
-          {codeLines.slice(0, currentLineIndex).map((line, index) => (
-            <div key={index} className="leading-relaxed">
-              {line.text === '' ? (
-                <div className="h-6"></div>
-              ) : (
-                <span className={line.color || 'text-white'}>
-                  {getIndentSpaces(line.indent)}{line.text}
-                </span>
-              )}
-            </div>
-          ))}
-          
-          {/* Current typing line */}
-          {currentLineIndex < codeLines.length && (
-            <div className="leading-relaxed">
-              <span className={codeLines[currentLineIndex].color || 'text-white'}>
-                {getIndentSpaces(codeLines[currentLineIndex].indent)}{currentText}
-                {showCursor && (
-                  <span className="text-blue-400 animate-pulse">|</span>
+        <div className="flex-1 w-full">
+          <div className="font-mono text-xs leading-tight">
+            {/* Completed lines */}
+            {codeLines.slice(0, currentLineIndex).map((line, index) => (
+              <div key={index} className="leading-tight">
+                {line.text === '' ? (
+                  <div className="h-3"></div>
+                ) : (
+                  <span className={line.color || 'text-white'}>
+                    {getIndentSpaces(line.indent)}{line.text}
+                  </span>
                 )}
-              </span>
-            </div>
-          )}
+              </div>
+            ))}
+            
+            {/* Current typing line */}
+            {currentLineIndex < codeLines.length && (
+              <div className="leading-tight">
+                <span className={codeLines[currentLineIndex].color || 'text-white'}>
+                  {getIndentSpaces(codeLines[currentLineIndex].indent)}{currentText}
+                  {showCursor && (
+                    <span className="text-blue-400 animate-pulse">|</span>
+                  )}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Right side content - Internship Images and Summary */}
         {isComplete && (
-          <div className="fixed right-0 top-1/2 -translate-y-1/2 translate-x-[660px] space-y-6 max-w-sm">
+          <div className="flex-shrink-0 w-full lg:w-64 space-y-4">
             {/* Internship Images with staggered animation */}
             <motion.div
-              className="space-y-4"
+              className="space-y-3"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 1, duration: 0.8 }}
             >
               {/* ASRC Image */}
               <motion.div
-                className="bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-lg p-4 overflow-hidden"
+                className="bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-lg p-2 overflow-hidden"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.2, duration: 0.6 }}
@@ -177,16 +179,16 @@ const ExperienceSection = ({ isAnimating }: ExperienceSectionProps) => {
                 <img 
                   src="/asrc.jpg" 
                   alt="ASRC Nanofabrication Facility"
-                  className="w-full h-40 object-contain rounded-lg bg-white"
+                  className="w-full h-28 object-contain rounded-lg bg-white"
                 />
-                <p className="text-xs text-cyan-400 font-mono mt-2 text-center">
+                <p className="text-xs text-cyan-400 font-mono mt-1 text-center">
                   ASRC Nanofab Facility
                 </p>
               </motion.div>
 
               {/* CodePath Image */}
               <motion.div
-                className="bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-lg p-4 overflow-hidden"
+                className="bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-lg p-2 overflow-hidden"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.4, duration: 0.6 }}
@@ -194,16 +196,16 @@ const ExperienceSection = ({ isAnimating }: ExperienceSectionProps) => {
                 <img 
                   src="/codepath.png" 
                   alt="CodePath Fellowship"
-                  className="w-full h-40 object-contain rounded-lg bg-white"
+                  className="w-full h-28 object-contain rounded-lg bg-white"
                 />
-                <p className="text-xs text-green-400 font-mono mt-2 text-center">
+                <p className="text-xs text-green-400 font-mono mt-1 text-center">
                   CodePath Fellowship
                 </p>
               </motion.div>
 
               {/* MTA Image */}
               <motion.div
-                className="bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-lg p-4 overflow-hidden"
+                className="bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-lg p-2 overflow-hidden"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.6, duration: 0.6 }}
@@ -211,9 +213,9 @@ const ExperienceSection = ({ isAnimating }: ExperienceSectionProps) => {
                 <img 
                   src="/mta.png" 
                   alt="Metropolitan Transit Authority"
-                  className="w-full h-40 object-contain rounded-lg bg-white"
+                  className="w-full h-28 object-contain rounded-lg bg-white"
                 />
-                <p className="text-xs text-sky-400 font-mono mt-2 text-center">
+                <p className="text-xs text-sky-400 font-mono mt-1 text-center">
                   MTA Internship
                 </p>
               </motion.div>

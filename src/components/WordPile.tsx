@@ -33,9 +33,10 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
   const [homeWords, setHomeWords] = useState<WordItem[]>([]);
   const [formationWords, setFormationWords] = useState<FormationWord[]>([]);
   const [showFormation, setShowFormation] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   
   // Derive showOnHome from the targetSection and isAnimating state
-  const showOnHome = targetSection === 'home' && !isAnimating;
+  const showOnHome = targetSection === 'home' && !isAnimating && isClient;
 
   // Color scheme
   const colors = [
@@ -46,12 +47,24 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
     'text-slate-300', 'text-slate-400'
   ];
 
-  // Generate words for homepage pile
+  // Set client-side flag
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Generate words for homepage pile - only on client
   const generateHomePile = () => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !isClient) return;
     
     const wordCount = window.innerWidth < 768 ? 80 : 120;
-    const shuffledWords = [...techWords].sort(() => 0.5 - Math.random());
+    
+    // Use seeded random for consistent results
+    const seededRandom = (seed: number) => {
+      let x = Math.sin(seed) * 10000;
+      return x - Math.floor(x);
+    };
+    
+    const shuffledWords = [...techWords].sort((a, b) => seededRandom(a.length) - seededRandom(b.length));
     const selectedWords = shuffledWords.slice(0, wordCount);
     
     const bottomStart = window.innerHeight * 0.75;
@@ -73,18 +86,23 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
       const baseX = margin + col * cellWidth;
       const baseY = bottomStart + row * cellHeight;
       
-      const x = Math.max(margin, Math.min(screenWidth - margin - 80, 
-        baseX + (Math.random() - 0.5) * 40));
-      const y = Math.max(bottomStart, Math.min(bottomStart + pileHeight - 30, 
-        baseY + (Math.random() - 0.5) * 20));
+      // Use seeded random for consistent positioning
+      const randomX = seededRandom(i * 7);
+      const randomY = seededRandom(i * 11);
+      const randomSize = seededRandom(i * 13);
+      const randomRotation = seededRandom(i * 17);
       
-      const sizeRandom = Math.random();
+      const x = Math.max(margin, Math.min(screenWidth - margin - 80, 
+        baseX + (randomX - 0.5) * 40));
+      const y = Math.max(bottomStart, Math.min(bottomStart + pileHeight - 30, 
+        baseY + (randomY - 0.5) * 20));
+      
       let scale: number, fontSize: string;
       
-      if (sizeRandom < 0.3) {
+      if (randomSize < 0.3) {
         scale = 0.8;
         fontSize = 'text-xs';
-      } else if (sizeRandom < 0.7) {
+      } else if (randomSize < 0.7) {
         scale = 1.0;
         fontSize = 'text-sm';
       } else {
@@ -97,9 +115,9 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
         text: selectedWords[i],
         x,
         y,
-        rotation: Math.random() * 20 - 10,
+        rotation: randomRotation * 20 - 10,
         scale,
-        color: colors[Math.floor(Math.random() * colors.length)],
+        color: colors[i % colors.length], // Use index instead of random
         fontSize,
         delay: i * 0.02
       });
@@ -110,7 +128,7 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
 
   // Generate formation text
   const generateFormation = () => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined' || !isClient) return;
     
     const sectionWords = getWordsForSection(targetSection);
     if (!sectionWords.length) return;
@@ -133,10 +151,10 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
 
   // Initialize home pile
   useEffect(() => {
-    if (showOnHome && !isAnimating) {
+    if (showOnHome && !isAnimating && isClient) {
       generateHomePile();
     }
-  }, [showOnHome, isAnimating]);
+  }, [showOnHome, isAnimating, isClient]);
 
   // Handle transition animation - REMOVED ALL TEXT ANIMATIONS
   useEffect(() => {
@@ -149,6 +167,8 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
 
   // Resize handler
   useEffect(() => {
+    if (!isClient) return;
+    
     const handleResize = () => {
       if (showOnHome && !isAnimating) {
         generateHomePile();
@@ -157,7 +177,7 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [showOnHome, isAnimating]);
+  }, [showOnHome, isAnimating, isClient]);
 
   const wordStyle = (wordItem: WordItem) => ({
     background: `linear-gradient(145deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.9) 100%)`,
@@ -172,6 +192,11 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
     padding: '2px 6px',
     boxShadow: '0 2px 4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1)',
   });
+
+  // Don't render anything on server or before client-side hydration
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-30 pointer-events-none">
@@ -201,9 +226,9 @@ const WordPile = ({ isAnimating, targetSection }: WordPileProps) => {
               rotate: word.rotation
             }}
             exit={{
-              y: word.y + window.innerHeight,
+              y: word.y + (typeof window !== 'undefined' ? window.innerHeight : 1000),
               opacity: 0,
-              rotate: word.rotation + (Math.random() * 90 - 45),
+              rotate: word.rotation + (word.delay * 90 - 45), // Use delay instead of random
               transition: { duration: 1, delay: word.delay }
             }}
             transition={{

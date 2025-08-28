@@ -3,13 +3,8 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-geist-sans: 'Geist', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,87 +27,53 @@ body {
   background-size: 50px 50px;
 }
 
-/* ZOOM OUT FIX - Keep your original design but make it smaller */
+.grid-pattern {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.12) 1px, transparent 1px);
+  background-size: 80px 40px; /* Rectangle: wider horizontally */
+  animation: gridPulse 8s ease-in-out infinite;
+}
 
-/* For laptops and large screens - zoom out to 85% */
-@media screen and (min-width: 1024px) and (max-width: 1600px) {
-  html {
-    zoom: 0.85;
+@keyframes gridPulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
   }
-  
-  /* Fallback for browsers that don't support zoom */
-  body {
-    transform: scale(0.85);
-    transform-origin: top left;
-    width: 118%; /* 100 / 0.85 */
-    height: 118%;
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
   }
 }
 
-/* For very large screens - zoom out to 90% */
-@media screen and (min-width: 1600px) {
-  html {
-    zoom: 0.9;
-  }
-  
-  body {
-    transform: scale(0.9);
-    transform-origin: top left;
-    width: 111%; /* 100 / 0.9 */
-    height: 111%;
-  }
+.grid-pattern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(34, 197, 94, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 197, 94, 0.06) 1px, transparent 1px);
+  background-size: 80px 40px;
+  animation: gridShift 12s linear infinite;
 }
 
-/* For smaller laptops - zoom out more */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  html {
-    zoom: 0.8;
+@keyframes gridShift {
+  0% {
+    transform: translateX(0) translateY(0);
   }
-  
-  body {
-    transform: scale(0.8);
-    transform-origin: top left;
-    width: 125%; /* 100 / 0.8 */
-    height: 125%;
+  25% {
+    transform: translateX(10px) translateY(5px);
   }
-}
-
-/* Keep your original mobile scaling */
-@media screen and (max-width: 768px) {
-  html {
-    zoom: 0.67;
+  50% {
+    transform: translateX(0) translateY(10px);
   }
-  
-  body {
-    transform: scale(0.67);
-    transform-origin: top left;
-    width: 149%; /* 100 / 0.67 */
-    height: 149%;
+  75% {
+    transform: translateX(-10px) translateY(5px);
   }
-}
-
-@media screen and (max-width: 480px) {
-  html {
-    zoom: 0.6;
-  }
-  
-  body {
-    transform: scale(0.6);
-    transform-origin: top left;
-    width: 167%; /* 100 / 0.6 */
-    height: 167%;
-  }
-}
-
-@media screen and (max-width: 360px) {
-  html {
-    zoom: 0.55;
-  }
-  
-  body {
-    transform: scale(0.55);
-    transform-origin: top left;
-    width: 182%; /* 100 / 0.55 */
-    height: 182%;
+  100% {
+    transform: translateX(0) translateY(0);
   }
 }

@@ -22,11 +22,11 @@ const EnhancedTerminal = () => {
     { id: '2', type: 'loading', text: '[████████░░] 80% Loading skills...', delay: 1000 },
     { id: '3', type: 'success', text: '✓ Python, JavaScript, C++ loaded', delay: 1500 },
     { id: '4', type: 'loading', text: '[██████████] 100% Compiling projects...', delay: 2000 },
-    { id: '5', type: 'success', text: '✓ 12 projects compiled successfully', delay: 2500 },
+    { id: '5', type: 'success', text: '✓ Projects compiled successfully', delay: 2500 },
     { id: '6', type: 'command', text: '$ whoami', delay: 3500, showCursor: true },
     { id: '7', type: 'output', text: 'samia-islam', delay: 4000 },
     { id: '8', type: 'command', text: '$ cat about.txt', delay: 4500, showCursor: true },
-    { id: '9', type: 'output', text: 'Senior Computer Science Student @ CUNY', delay: 5000 },
+    { id: '9', type: 'output', text: 'Computer Science Student @ CCNY', delay: 5000 },
     { id: '10', type: 'output', text: 'AI Developer | Full-Stack Engineer', delay: 5300 },
     { id: '11', type: 'command', text: '$ status --current', delay: 6000, showCursor: true },
     { id: '12', type: 'success', text: '✓ Ready to build amazing things!', delay: 6500 },
@@ -89,10 +89,11 @@ const EnhancedTerminal = () => {
   return (
     <motion.div
       className="relative mx-auto bg-gray-900/95 rounded-xl border border-slate-600/50 overflow-hidden backdrop-blur-sm"
-      style={{ 
-        width: 'min(90vw, 600px)',
-        height: 'min(70vh, 500px)',
-        maxHeight: '500px'
+      style={{
+        width: '480px', // Fixed width - adjust as needed
+        height: '320px', // Fixed height
+        minWidth: '480px', // Prevent shrinking
+        maxWidth: '480px'  // Prevent growing
       }}
       initial={{ scale: 0, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
@@ -104,7 +105,7 @@ const EnhancedTerminal = () => {
       }}
     >
       {/* Terminal Header */}
-      <div className="flex items-center justify-between p-4 bg-gray-800/80 border-b border-slate-600/50">
+      <div className="flex items-center justify-between p-3 bg-gray-800/80 border-b border-slate-600/50">
         <div className="flex space-x-2">
           <motion.div 
             className="w-3 h-3 bg-red-500 rounded-full cursor-pointer"
@@ -122,48 +123,50 @@ const EnhancedTerminal = () => {
             whileTap={{ scale: 0.9 }}
           />
         </div>
-        <div className="text-sm text-slate-400 font-mono">
+        <div className="text-xs text-slate-400 font-mono">
           samia@portfolio:~$
         </div>
-        <div className="w-16" /> {/* Spacer */}
+        <div className="w-12" />
       </div>
 
       {/* Terminal Content */}
-      <div className="p-4 h-full overflow-y-auto font-mono text-sm">
-        <motion.div className="space-y-2">
+      <div className="p-3 h-full overflow-hidden font-mono text-xs">
+        <motion.div className="space-y-0.5 leading-tight h-full overflow-y-auto">
           {lines.map((line, index) => (
             <motion.div
               key={line.id}
-              className={`${getLineColor(line.type)} leading-relaxed`}
+              className={`${getLineColor(line.type)} leading-tight overflow-hidden`}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1, duration: 0.3 }}
             >
               {/* Loading bars animation */}
               {line.type === 'loading' && (
-                <motion.span
+                <motion.div
+                  className="truncate"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: [0.5, 1, 0.5] }}
                   transition={{ duration: 1, repeat: Infinity }}
                 >
                   {typewriterTexts[line.id] || line.text}
-                </motion.span>
+                </motion.div>
               )}
               
               {/* Success/Error messages with icons */}
               {(line.type === 'success' || line.type === 'error') && (
-                <motion.span
+                <motion.div
+                  className="truncate"
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ delay: 0.2, duration: 0.3 }}
                 >
                   {typewriterTexts[line.id] || line.text}
-                </motion.span>
+                </motion.div>
               )}
               
               {/* Regular text with typewriter effect */}
               {(line.type === 'command' || line.type === 'output') && (
-                <span>
+                <div className="truncate">
                   {typewriterTexts[line.id] || ''}
                   {/* Blinking cursor */}
                   {line.showCursor && (
@@ -175,7 +178,7 @@ const EnhancedTerminal = () => {
                       ▋
                     </motion.span>
                   )}
-                </span>
+                </div>
               )}
             </motion.div>
           ))}
@@ -183,7 +186,7 @@ const EnhancedTerminal = () => {
 
         {/* System stats sidebar */}
         <motion.div
-          className="absolute top-16 right-4 text-xs text-slate-400 space-y-1"
+          className="absolute top-12 right-2 text-xs text-slate-400 space-y-1"
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 2, duration: 0.5 }}

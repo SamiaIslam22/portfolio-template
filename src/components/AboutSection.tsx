@@ -118,20 +118,20 @@ const AboutSection = ({ isAnimating }: AboutSectionProps) => {
 
   return (
     <motion.section
-      className="min-h-screen pt-24 pb-12 px-4 flex items-center"
+      className="min-h-screen pt-12 pb-6 px-4 flex items-center"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.5, duration: 1 }}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-center gap-16">
+      <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-6">
         {/* Left side - Code display */}
-        <div className="flex-1 px-2 transform -translate-x-20 md:-translate-x-32">
-          <div className="font-mono text-sm md:text-base">
+        <div className="flex-1 w-full lg:w-auto">
+          <div className="font-mono text-xs leading-tight">
             {/* Completed lines */}
             {codeLines.slice(0, currentLineIndex).map((line, index) => (
-              <div key={index} className="leading-relaxed">
+              <div key={index} className="leading-tight">
                 {line.text === '' ? (
-                  <div className="h-6"></div>
+                  <div className="h-3"></div>
                 ) : (
                   <span className={line.color || 'text-white'}>
                     {getIndentSpaces(line.indent)}{line.text}
@@ -142,7 +142,7 @@ const AboutSection = ({ isAnimating }: AboutSectionProps) => {
             
             {/* Current typing line */}
             {currentLineIndex < codeLines.length && (
-              <div className="leading-relaxed">
+              <div className="leading-tight">
                 <span className={codeLines[currentLineIndex].color || 'text-white'}>
                   {getIndentSpaces(codeLines[currentLineIndex].indent)}{currentText}
                   {showCursor && (
@@ -157,7 +157,7 @@ const AboutSection = ({ isAnimating }: AboutSectionProps) => {
         {/* Right side - Profile Picture */}
         {isComplete && (
           <motion.div
-            className="flex-shrink-0 w-96 flex flex-col items-center"
+            className="flex-shrink-0 w-full lg:w-72 flex flex-col items-center"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ 
@@ -173,15 +173,15 @@ const AboutSection = ({ isAnimating }: AboutSectionProps) => {
               <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-400/30 via-cyan-400/30 to-sky-400/30 blur-xl animate-pulse"></div>
               
               {/* Main image container */}
-              <div className="relative bg-gray-900/80 backdrop-blur-sm border-2 border-blue-400/50 rounded-2xl p-5 shadow-2xl">
+              <div className="relative bg-gray-900/80 backdrop-blur-sm border-2 border-blue-400/50 rounded-2xl p-3 shadow-2xl">
                 <img 
                   src="/pfp.JPG" 
                   alt="Samia Islam - Computer Science Student"
-                  className="w-full h-auto rounded-xl object-cover shadow-lg"
+                  className="w-full h-auto rounded-xl object-cover shadow-lg max-w-56"
                 />
                 
                 {/* Status indicator */}
-                <div className="absolute top-7 right-7 flex items-center gap-2 bg-gray-900/90 backdrop-blur-sm px-3 py-1 rounded-full border border-green-400/50">
+                <div className="absolute top-6 right-6 flex items-center gap-2 bg-gray-900/90 backdrop-blur-sm px-3 py-1 rounded-full border border-green-400/50">
                   <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
                   <span className="font-mono text-xs text-green-400">Available</span>
                 </div>
@@ -190,18 +190,18 @@ const AboutSection = ({ isAnimating }: AboutSectionProps) => {
 
             {/* Info Card */}
             <motion.div
-              className="mt-6 bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-lg p-5 w-full"
+              className="mt-3 bg-gray-900/80 backdrop-blur-sm border border-blue-400/30 rounded-lg p-3 w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.5, duration: 0.8 }}
             >
               <div className="text-center">
-                <h3 className="font-mono font-bold text-blue-400 mb-2 text-lg">Samia Islam</h3>
-                <p className="font-mono text-base text-gray-300 mb-2">Computer Science</p>
-                <p className="font-mono text-sm text-gray-400">City College of New York</p>
-                <div className="mt-4 flex justify-center gap-2">
-                  <span className="bg-blue-400/20 text-blue-300 px-3 py-1 rounded text-sm font-mono">AI Enthusiast</span>
-                  <span className="bg-cyan-400/20 text-cyan-300 px-3 py-1 rounded text-sm font-mono">Full-Stack Dev</span>
+                <h3 className="font-mono font-bold text-blue-400 mb-2">Samia Islam</h3>
+                <p className="font-mono text-sm text-gray-300 mb-2">Computer Science</p>
+                <p className="font-mono text-xs text-gray-400">City College of New York</p>
+                <div className="mt-3 flex justify-center gap-2">
+                  <span className="bg-blue-400/20 text-blue-300 px-2 py-1 rounded text-xs font-mono">AI Enthusiast</span>
+                  <span className="bg-cyan-400/20 text-cyan-300 px-2 py-1 rounded text-xs font-mono">Full-Stack Dev</span>
                 </div>
               </div>
             </motion.div>

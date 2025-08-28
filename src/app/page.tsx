@@ -15,6 +15,12 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState<string>('home');
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
   const [showHomePage, setShowHomePage] = useState<boolean>(true);
+  const [isClient, setIsClient] = useState(false);
+  
+  // Set client flag after hydration
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Disable scrolling always - we control all navigation
   useEffect(() => {
@@ -53,6 +59,42 @@ export default function Home() {
     }
   };
 
+  // Generate consistent floating snippets only on client
+  const generateFloatingSnippets = () => {
+    if (!isClient) return [];
+    
+    const codeSnippets = [
+      'stack_overflow', 'console.log("*")', 'const magic = () => {...}', 
+      'while(coding) learn++;', '// This works!', 'git commit -m "*"',
+      'npm install', 'async/await'
+    ];
+    
+    // Pre-defined positions to ensure good distribution
+    const positions = [
+      { x: 15, y: 15 },   // Top-left
+      { x: 85, y: 15 },   // Top-right
+      { x: 8, y: 45 },    // Left-center
+      { x: 92, y: 40 },   // Right-center
+      { x: 12, y: 75 },   // Bottom-left
+      { x: 88, y: 80 },   // Bottom-right
+      { x: 20, y: 30 },   // Mid-left area
+      { x: 75, y: 65 }    // Mid-right area
+    ];
+    
+    return [...Array(8)].map((_, i) => {
+      const position = positions[i] || { x: 15 + (i * 10), y: 20 + (i * 8) };
+      
+      return {
+        id: i,
+        x: position.x,
+        y: position.y,
+        snippet: codeSnippets[i % codeSnippets.length]
+      };
+    });
+  };
+
+  const floatingSnippets = generateFloatingSnippets();
+
   return (
     <main className="min-h-screen bg-black text-green-400 font-mono overflow-hidden relative">
       {/* Simplified Grid Background - Always visible */}
@@ -77,39 +119,17 @@ export default function Home() {
               transition: { duration: 1.5, ease: "easeInOut" }
             }}
           >
-            {/* Floating Code Snippets - Random positions and more words */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-              {[...Array(12)].map((_, i) => {
-                // Generate random positions each time - avoiding center area
-                const centerX = 50; // Center percentage
-                const centerY = 50; // Center percentage
-                const avoidRadius = 25; // Percentage radius to avoid center
-                
-                let x, y;
-                do {
-                  x = Math.random() * 80 + 10; // 10% to 90%
-                  y = Math.random() * 80 + 10; // 10% to 90%
-                } while (
-                  Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2)) < avoidRadius
-                );
-                
-                // Array of more code snippets
-                const codeSnippets = [
-                  'stack_overflow', 'console.log("*")', 'const magic = () => {...}', 
-                  'while(coding) learn++;', '// This works!', 'git commit -m "*"',
-                  'npm install', 'async/await', 'try { } catch()', 'function debug()',
-                  'return true;', 'import React', 'export default', 'useState()',
-                  'useEffect()', '=> arrow func', 'null_pointer', 'undefined'
-                ];
-                
-                return (
+            {/* Floating Code Snippets - Only render on client */}
+            {isClient && (
+              <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                {floatingSnippets.map((item) => (
                   <motion.div
-                    key={`float-${i}`}
-                    className="absolute text-sm font-mono text-blue-400/60 bg-black/50 px-3 py-2 rounded-lg border border-blue-400/20"
+                    key={`float-${item.id}`}
+                    className="absolute text-xs md:text-sm font-mono text-blue-400/60 bg-black/50 px-2 py-1 rounded border border-blue-400/20"
                     style={{
-                      left: `${x}%`,
-                      top: `${y}%`,
-                      transform: 'rotate(0deg)' // Keep straight
+                      left: `${item.x}%`,
+                      top: `${item.y}%`,
+                      transform: 'rotate(0deg)'
                     }}
                     initial={{ 
                       opacity: 0,
@@ -122,20 +142,20 @@ export default function Home() {
                     }}
                     transition={{
                       duration: 1,
-                      delay: i * 0.2,
+                      delay: item.id * 0.2,
                       repeat: Infinity,
                       repeatType: "reverse",
                       repeatDelay: 12
                     }}
                   >
-                    {codeSnippets[i % codeSnippets.length]}
+                    {item.snippet}
                   </motion.div>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            )}
 
             {/* Main Content - Side by side layout */}
-            <div className="flex items-center justify-center gap-16 mb-8 z-20 max-w-7xl mx-auto">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-8 mb-8 z-20 max-w-6xl mx-auto px-4">
               {/* Enhanced Terminal Window */}
               <motion.div 
                 className="flex-shrink-0"
@@ -158,7 +178,7 @@ export default function Home() {
                   stiffness: 100
                 }}
               >
-                <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-4">
+                <h1 className="text-xl md:text-2xl lg:text-4xl font-bold mb-4">
                   <motion.span 
                     className="text-blue-400"
                     initial={{ opacity: 0 }}
@@ -217,7 +237,7 @@ export default function Home() {
                   </motion.span>
                   {/* Blinking Cursor */}
                   <motion.span 
-                    className="text-blue-400 ml-0.5 text-4xl md:text-5xl lg:text-7xl"
+                    className="text-blue-400 ml-0.5 text-2xl md:text-3xl lg:text-5xl"
                     initial={{ opacity: 0 }}
                     animate={{ 
                       opacity: [0, 1, 1, 0]
@@ -246,12 +266,12 @@ export default function Home() {
 
             {/* Stats Panel - Simplified */}
             <motion.div
-              className="absolute top-20 right-10 text-xs font-mono text-slate-400 bg-gray-900/70 backdrop-blur-sm p-4 rounded-lg border border-slate-600/30"
+              className="absolute top-20 right-4 lg:right-10 text-xs font-mono text-slate-400 bg-gray-900/70 backdrop-blur-sm p-3 rounded-lg border border-slate-600/30"
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 2.8, duration: 0.8 }}
             >
-              <div className="space-y-2">
+              <div className="space-y-1">
                 <div className="flex justify-between items-center">
                   <span>Lines coded:</span>
                   <span className="text-blue-400 font-bold ml-2">12,847</span>
@@ -269,7 +289,7 @@ export default function Home() {
 
             {/* Status Indicator */}
             <motion.div
-              className="absolute top-10 left-10 flex items-center gap-2 text-xs text-slate-400 bg-gray-900/70 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-600/30"
+              className="absolute top-10 left-4 lg:left-10 flex items-center gap-2 text-xs text-slate-400 bg-gray-900/70 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-600/30"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 3, type: "spring" }}
